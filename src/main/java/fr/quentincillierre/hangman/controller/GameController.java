@@ -1,27 +1,101 @@
 package fr.quentincillierre.hangman.controller;
 
-import javafx.event.ActionEvent;
+import fr.quentincillierre.hangman.model.GameModel;
+import fr.quentincillierre.hangman.model.WordRepository;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
-import java.io.IOException;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 
 public class GameController {
+
     @FXML
-    private Stage stage;
+    private Label wordLabel;
 
-    private Scene scene;
-    private Parent root;
+    @FXML
+    private Label resultLabel;
 
-    public void escape(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("/fr/quentincillierre/hangman/application/escape-menu-view.fxml"));
-        stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+    @FXML
+    private ImageView hangmanImageView;
+
+    @FXML
+    private GridPane keyboardGrid;
+
+    private GameModel model;
+
+    // Automatically call by JavaFX when FXML file is loaded
+    @FXML
+    public void initialize() {
+        WordRepository wordRepository = new WordRepository();
+
+        this.model = new GameModel(wordRepository.getRandomWord());
+
+        //UI update with "_____"
+        refreshUI();
+
+        //Loading letters buttons
+        generateKeyboard();
+
+        resultLabel.setOpacity(0);
+    }
+
+    private void refreshUI() {
+        wordLabel.setText(model.getHiddenWord());
+
+        hangmanImageView.setImage(new Image(getClass().getResource( "/pictures/%s-hangman.png".formatted(model.getCurrentWrongs())).toExternalForm()));
+
+        if (model.isLose() || model.isWin()){
+            keyboardGrid.setDisable(true);
+            wordLabel.setText(model.getWordToGuess());
+            resultLabel.setOpacity(1);
+            resultLabel.setAlignment(Pos.CENTER);
+            if (model.isWin()){
+                resultLabel.setText("Victory !");
+            }
+            else {
+                resultLabel.setText("Game Over !");
+            }
+        }
+    }
+
+    private void generateKeyboard() {
+        for (char c = 'A'; c <= 'Z'; c++){
+            Button letterButton = new Button(String.valueOf(c));
+
+            letterButton.setOnAction(event -> {
+                char letter = letterButton.getText().charAt(0);
+
+                model.tryLetter(letter);
+
+                refreshUI();
+            });
+
+            int index = (int) c - 65;
+            int col = index % 13;
+            int row = index / 13;
+
+            keyboardGrid.add(letterButton, col, row);
+        }
+
+    }
+
+    public void handleKeyboardInput(String character){
+
+        if (model.isWin() || model.isLose()){
+            return;
+        }
+        if (character != null && character.length() == 1){
+
+            char letter = Character.toUpperCase(character.charAt(0));
+
+            if ('A' <= letter && letter <= 'Z'){
+                model.tryLetter(letter);
+
+                refreshUI();
+            }
+        }
     }
 }

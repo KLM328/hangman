@@ -9,4 +9,6 @@ module fr.quentincillierre.hangman {
     opens fr.quentincillierre.hangman.application to javafx.fxml;
     exports fr.quentincillierre.hangman.controller;
     opens fr.quentincillierre.hangman.controller to javafx.fxml;
+    exports fr.quentincillierre.hangman.model;
+    opens fr.quentincillierre.hangman.model to javafx.fxml;
 }
