@@ -3,13 +3,13 @@ package fr.quentincillierre.hangman.model;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class GameModel {
+public class HangmanModel {
     private final String wordToGuess;
     private final int maxWrongs;
     private int currentWrongs;
     private Set<Character> guessedLetter;
 
-    public GameModel(String wordToGuess) {
+    public HangmanModel(String wordToGuess) {
         this.wordToGuess = wordToGuess.toUpperCase();
         this.maxWrongs = 10;
         this.currentWrongs = 0;
@@ -65,7 +65,7 @@ public class GameModel {
     }
 
     public static void main(String[] args){
-        GameModel game = new GameModel("java");
+        HangmanModel game = new HangmanModel("java");
         game.tryLetter('R');
         System.out.println(game.getHiddenWord());
         game.tryLetter('A');

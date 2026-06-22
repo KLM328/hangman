@@ -1,6 +1,6 @@
 package fr.quentincillierre.hangman.controller;
 
-import fr.quentincillierre.hangman.model.GameModel;
+import fr.quentincillierre.hangman.model.HangmanModel;
 import fr.quentincillierre.hangman.model.WordRepository;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -24,14 +24,14 @@ public class GameController {
     @FXML
     private GridPane keyboardGrid;
 
-    private GameModel model;
+    private HangmanModel model;
 
     // Automatically call by JavaFX when FXML file is loaded
     @FXML
     public void initialize() {
         WordRepository wordRepository = new WordRepository();
 
-        this.model = new GameModel(wordRepository.getRandomWord());
+        this.model = new HangmanModel(wordRepository.getRandomWord());
 
         //UI update with "_____"
         refreshUI();
@@ -66,11 +66,7 @@ public class GameController {
             Button letterButton = new Button(String.valueOf(c));
 
             letterButton.setOnAction(event -> {
-                char letter = letterButton.getText().charAt(0);
-
-                model.tryLetter(letter);
-
-                refreshUI();
+                handleKeyboardInput(letterButton.getText());
             });
 
             int index = (int) c - 65;
