@@ -1,8 +1,24 @@
 package fr.quentincillierre.hangman.model;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 public class HangmanModel {
 
     public HangmanModel(String java) {
+    }
+
+    public String getWordToGuess() {
+        return "";
+    }
+
+    public int getCurrentWrongs() {
+        return -1;
+    }
+
+    public Set<Character> getGuessedLetter() {
+        return new HashSet<>();
     }
 
     public void tryLetter(Character letter) {
@@ -43,6 +59,7 @@ public class HangmanModel {
         game.tryLetter('g');
         System.out.println(game.isLose() ? "LOSE" : "KEEP PUSHING");
     }
+
 
 
 }
