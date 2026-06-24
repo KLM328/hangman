@@ -1,19 +1,29 @@
 package fr.quentincillierre.hangman.model;
 
+import fr.quentincillierre.hangman.GameMode;
+
+import java.time.Clock;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.Timer;
 
 public class HangmanModel {
     private final String wordToGuess;
     private final int maxWrongs;
     private int currentWrongs;
     private Set<Character> guessedLetter;
+    private boolean timeOut;
 
     public HangmanModel(String wordToGuess) {
         this.wordToGuess = wordToGuess.toUpperCase();
         this.maxWrongs = 10;
         this.currentWrongs = 0;
         this.guessedLetter = new LinkedHashSet<>();
+        this.timeOut = false;
+    }
+
+    public void setTimeOut(boolean timeOut) {
+        this.timeOut = timeOut;
     }
 
     public Set<Character> getGuessedLetter() {
@@ -61,7 +71,7 @@ public class HangmanModel {
     }
 
     public boolean isLose(){
-        return currentWrongs >= maxWrongs;
+        return (currentWrongs >= maxWrongs || this.timeOut);
     }
 
     public static void main(String[] args){

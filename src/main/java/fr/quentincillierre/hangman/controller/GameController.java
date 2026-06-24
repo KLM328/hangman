@@ -1,7 +1,11 @@
 package fr.quentincillierre.hangman.controller;
 
+import fr.quentincillierre.hangman.GameMode;
 import fr.quentincillierre.hangman.model.HangmanModel;
 import fr.quentincillierre.hangman.model.WordRepository;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -9,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.util.Duration;
 
 public class GameController {
 
@@ -19,12 +24,47 @@ public class GameController {
     private Label resultLabel;
 
     @FXML
+    private Label timeLabel;
+
+    @FXML
     private ImageView hangmanImageView;
 
     @FXML
     private GridPane keyboardGrid;
 
     private HangmanModel model;
+
+    private Timeline timeline;
+
+    private int timeLeft;
+
+    private GameMode gameMode;
+
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
+
+        if (gameMode.equals(GameMode.TIME_ATTACK)){
+            timeLeft = 60;
+            timeLabel.setText("%ss".formatted(this.timeLeft));
+
+            timeLabel.setVisible(true);
+
+
+
+            KeyFrame pulse = new KeyFrame(Duration.seconds(1), actionEvent -> {
+                timeLeft--;
+                if (timeLeft <= 0){
+                    model.setTimeOut(true);
+                    refreshUI();
+                }
+                timeLabel.setText("%ss".formatted(this.timeLeft));
+            });
+
+            timeline = new Timeline(pulse);
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
+        }
+    }
 
     // Automatically call by JavaFX when FXML file is loaded
     @FXML
@@ -40,6 +80,8 @@ public class GameController {
         generateKeyboard();
 
         resultLabel.setOpacity(0);
+
+        timeLabel.setVisible(false);
     }
 
     private void refreshUI() {
@@ -48,6 +90,9 @@ public class GameController {
         hangmanImageView.setImage(new Image(getClass().getResource( "/pictures/%s-hangman.png".formatted(model.getCurrentWrongs())).toExternalForm()));
 
         if (model.isLose() || model.isWin()){
+            if (this.gameMode.equals(GameMode.TIME_ATTACK)){
+                timeline.stop();
+            }
             keyboardGrid.setDisable(true);
             wordLabel.setText(model.getWordToGuess());
             resultLabel.setOpacity(1);

@@ -1,5 +1,6 @@
 package fr.quentincillierre.hangman.model;
 
+import fr.quentincillierre.hangman.GameMode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Set;

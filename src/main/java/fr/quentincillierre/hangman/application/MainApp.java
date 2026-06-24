@@ -1,29 +1,25 @@
 package fr.quentincillierre.hangman.application;
 
 import fr.quentincillierre.hangman.controller.GameController;
+import fr.quentincillierre.hangman.controller.MenuController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("game-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("menu-view.fxml"));
 
-        BorderPane root = loader.load();
+        VBox root = loader.load();
 
-        GameController controller = loader.getController();
+        Scene scene = new Scene(root, 800, 800);
 
-        Scene scene = new Scene(root, 600, 400);
-
-        scene.setOnKeyTyped(event -> {
-            controller.handleKeyboardInput(event.getCharacter());
-        });
-
-        primaryStage.setTitle("HangMan");
+        primaryStage.setTitle("HangMan Menu");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
 
