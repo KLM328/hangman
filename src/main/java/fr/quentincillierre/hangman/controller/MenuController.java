@@ -39,6 +39,7 @@ public class MenuController {
         });
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setTitle("HangMan : " + mode);
         stage.setScene(gameScene);
     }
 }
