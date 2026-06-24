@@ -60,7 +60,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>fr.quentincillierre.hangman/fr.quentincillierre.hangman.application.MenuApplication
+                            <mainClass>fr.quentincillierre.hangman/fr.quentincillierre.hangman.application.MainApp
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
