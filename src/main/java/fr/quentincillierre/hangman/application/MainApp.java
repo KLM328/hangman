@@ -31,7 +31,6 @@ public class MainApp extends Application {
     }
 
     public static void main(String[] args) {
-        // Lance l'application JavaFX (qui appellera la méthode start)
         launch(args);
     }
 }
